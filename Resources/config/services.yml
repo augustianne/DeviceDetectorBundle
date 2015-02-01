@@ -1,0 +1,27 @@
+services:
+
+	## Detector
+	yan.device_detector.device_detector:
+		class: Yan\Bundle\DeviceDetectorBundle\Detector\DeviceDetector
+		arguments:
+			configuration: @yan.device_detector.device_detector_configuration
+
+	yan.device_detector.device_detector_configuration:
+		class: Yan\Bundle\DeviceDetectorBundle\Detector\DeviceDetectorConfiguration
+		arguments: 
+			container: @service_container
+
+	## Listener
+	yan.device_detector.listener:
+        class: Yan\Bundle\DeviceDetectorBundle\Listener\DeviceListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+        arguments:
+            detector: @yan.device_detector.device_detector
+            configuration: @yan.device_detector.device_detector_configuration
+            utility: @yan.device_detector.controller_utility
+            container: @service_container
+
+	## Utility
+	yan.device_detector.controller_utility:
+		class: Yan\Bundle\DeviceDetectorBundle\Utility\ControllerUtility
