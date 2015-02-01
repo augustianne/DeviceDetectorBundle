@@ -1,0 +1,4 @@
+# OSX Files
+*.DS_Store
+composer.lock
+vendor

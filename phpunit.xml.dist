@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit colors="true" bootstrap="./vendor/autoload.php">
+    <testsuites>
+        <testsuite name="All">
+            <directory>./Tests/</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>./Tests/Unit/</directory>
+        </testsuite>
+        <testsuite name="Detector">
+            <directory>./Tests/Unit/Detector/</directory>
+        </testsuite>
+        <testsuite name="Utility">
+            <directory>./Tests/Unit/Utility/</directory>
+        </testsuite>
+        <testsuite name="Listener">
+            <directory>./Tests/Unit/Listener/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>./</directory>
+            <exclude>
+                <directory>./Tests</directory>
+                <directory>./vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
