@@ -15,7 +15,7 @@ services:
     yan.device_detector.listener:
         class: Yan\Bundle\DeviceDetectorBundle\Listener\DeviceListener
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 1 }
         arguments:
             detector: @yan.device_detector.device_detector
             configuration: @yan.device_detector.device_detector_configuration
