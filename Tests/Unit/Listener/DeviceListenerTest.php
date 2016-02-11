@@ -60,6 +60,34 @@ class DeviceListenerTest extends \PHPUnit_Framework_TestCase
         ); 
     }
 
+    public function getDataForRerouteOverride()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        'from_controller_path' => '',
+                        'to_controller_path' => '',
+                        'routes' => array()
+                    )
+                ),
+                'Yan\Bundle\DeviceDetectorBundle\Tests\Fixture\Controller\MobileFrontend\DefaultController',
+                'Yan\Bundle\DeviceDetectorBundle\Tests\Fixture\Controller\Frontend\DefaultController'
+            ),
+            array(
+                array(
+                    array(
+                        'from_controller_path' => '',
+                        'to_controller_path' => '',
+                        'routes' => array()
+                    )
+                ),
+                'Yan\Bundle\DeviceDetectorBundle\Tests\Fixture\Controller\MobileFrontend\DefaultController',
+                'Yan\Bundle\DeviceDetectorBundle\Tests\Fixture\Controller\Frontend\DefaultController'
+            )
+        ); 
+    }
+
     private function getMobileRequest()
     {
     	$request = new Request(array(), array(), array(
@@ -126,6 +154,56 @@ class DeviceListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->detectorMock->expects($this->any())
             ->method('isControllerRoutable')
+            ->will($this->returnValue(true));
+
+        $this->detectorMock->expects($this->any())
+            ->method('isOverrideMobile')
+            ->will($this->returnValue(false));
+        
+        $sut = new DeviceListener($this->detectorMock, $this->configurationMock, $this->utilityMock, $this->containerMock);
+        $sut->reroute($event, $value1);
+
+        $controller = $event->getController();
+        $newController = $controller[0];
+
+        $this->assertEquals($expected, get_class($newController));
+    }
+
+    /**
+     * @covers Yan/Bundle/DeviceDetectorBundle/Listener/DeviceListener::reroute
+     * @dataProvider getDataForRerouteOverride
+     */
+    public function testRerouteOverride($value1, $value2, $expected)
+    {
+        $request = $this->getMobileRequest();
+        
+        $controller = new DefaultController();
+        $controller->setContainer($this->containerMock);
+
+        $event = $this->getFilterControllerEvent(array($controller, 'indexAction'), $request);
+
+        $this->utilityMock->expects($this->any())
+            ->method('getControllerAction')
+            ->will($this->returnValue('indexAction'));
+
+        $this->utilityMock->expects($this->any())
+            ->method('getControllerClass')
+            ->will($this->returnValue(get_class($controller)));
+
+        $this->utilityMock->expects($this->any())
+            ->method('getNewController')
+            ->will($this->returnValue($value2));
+
+        $this->detectorMock->expects($this->any())
+            ->method('isRouteListed')
+            ->will($this->returnValue(true));
+
+        $this->detectorMock->expects($this->any())
+            ->method('isControllerRoutable')
+            ->will($this->returnValue(true));
+
+        $this->detectorMock->expects($this->any())
+            ->method('isOverrideMobile')
             ->will($this->returnValue(true));
         
         $sut = new DeviceListener($this->detectorMock, $this->configurationMock, $this->utilityMock, $this->containerMock);

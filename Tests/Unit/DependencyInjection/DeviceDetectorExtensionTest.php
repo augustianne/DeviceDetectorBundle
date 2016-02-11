@@ -26,7 +26,8 @@ class DeviceDetectorExtensionTest extends \PHPUnit_Framework_TestCase
     public function getConfigDefaultValues()
     {
         return array(
-            array('tablet.treat_as_mobile', true)
+            array('tablet.treat_as_mobile', true),
+            array('override_cookie', 'DEVICE_DETECTOR_OVERRIDE')
         );
     }
 
@@ -35,7 +36,8 @@ class DeviceDetectorExtensionTest extends \PHPUnit_Framework_TestCase
         return array(
             array('tablet.treat_as_mobile', true),
             array('mobile', true),
-            array('tablet', true)
+            array('tablet', true),
+            array('override_cookie', true)
         );
     }
 
@@ -46,7 +48,6 @@ class DeviceDetectorExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigDefaultValues($config, $default)
     {
         $this->sut->load(array(), $this->container);
-
         $this->assertTrue($this->container->hasParameter($this->root.".".$config));
         $this->assertEquals($default, $this->container->getParameter($this->root.".".$config));
     }
@@ -69,6 +70,7 @@ class DeviceDetectorExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $configs = array(
             'device_detector' => array(
+                'override_cookie' => 'CONFIGURED_COOKIE_NAME',
                 'mobile' => array(
                     'controllers' => array(
                         array(
@@ -81,6 +83,8 @@ class DeviceDetectorExtensionTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->sut->load($configs, $this->container);
+
+        // $this->assertEqual('CONFIGURED_COOKIE_NAME', $this->container->getParameter($this->root.".override_cookie"));
 
         $this->assertTrue($this->container->hasParameter($this->root.".mobile"));
         $this->assertTrue($this->container->hasParameter($this->root.".mobile.controllers"));

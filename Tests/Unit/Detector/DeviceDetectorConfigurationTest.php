@@ -139,4 +139,92 @@ class DeviceDetectorConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result, $expectedResult);
     }
+
+    /**
+     * @covers Yan/Bundle/DeviceDetectorBundle/Detector/DeviceDetectorConfiguration::getTabletControllers
+     */
+    public function testGetOverrideCookieName()
+    {
+        $expected = 'DEVICE_DETECTOR_OVERRIDE';
+
+        $containerMock = $this->getContainerMock();
+        $containerMock->expects($this->any())
+            ->method('getParameter')
+            ->with('device_detector.override_cookie')
+            ->will($this->returnValue($expected));
+
+        $sut = new DeviceDetectorConfiguration($containerMock);
+        
+        $result = $sut->getOverrideCookieName();
+
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @covers Yan/Bundle/DeviceDetectorBundle/Detector/DeviceDetector::isOverrideMobile
+     */
+    public function testIsOverrideMobileTrue()
+    {
+        $cookieName = 'CONFIGURED_NAME';
+
+        $sessionMock = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\Session')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $sessionMock->expects($this->any())
+            ->method('has')
+            ->with($cookieName)
+            ->will($this->returnValue(true));
+        
+        $containerMock = $this->getContainerMock();
+        $containerMock->expects($this->any())
+            ->method('get')
+            ->with('session')
+            ->will($this->returnValue($sessionMock));
+
+        $containerMock->expects($this->any())
+            ->method('getParameter')
+            ->with('device_detector.override_cookie')
+            ->will($this->returnValue($cookieName));
+
+        $sut = new DeviceDetectorConfiguration($containerMock);
+        
+        $result = $sut->hasOverrideCookie();
+
+        $this->assertTrue($result);
+    } 
+
+    /**
+     * @covers Yan/Bundle/DeviceDetectorBundle/Detector/DeviceDetector::isOverrideMobile
+     */
+    public function testIsOverrideMobileFalse()
+    {
+        $cookieName = 'CONFIGURED_NAME';
+
+        $sessionMock = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\Session')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $sessionMock->expects($this->any())
+            ->method('has')
+            ->with($cookieName)
+            ->will($this->returnValue(false));
+        
+        $containerMock = $this->getContainerMock();
+        $containerMock->expects($this->any())
+            ->method('get')
+            ->with('session')
+            ->will($this->returnValue($sessionMock));
+
+        $containerMock->expects($this->any())
+            ->method('getParameter')
+            ->with('device_detector.override_cookie')
+            ->will($this->returnValue($cookieName));
+
+        $sut = new DeviceDetectorConfiguration($containerMock);
+        
+        $result = $sut->hasOverrideCookie();
+
+        $this->assertFalse($result);
+    } 
 }

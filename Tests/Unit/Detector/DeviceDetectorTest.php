@@ -241,5 +241,37 @@ class DeviceDetectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $sut->isControllerRoutable($value1, $value2));
     }
 
+    /**
+     * @covers Yan/Bundle/DeviceDetectorBundle/Detector/DeviceDetector::isOverrideMobile
+     */
+    public function testIsOverrideMobileTrue()
+    {
+        $configurationMock = $this->getConfigurationMock();
+        $configurationMock->expects($this->any())
+            ->method('hasOverrideCookie')
+            ->will($this->returnValue(true));
 
+        $sut = new DeviceDetector($configurationMock);
+        
+        $result = $sut->isOverrideMobile();
+
+        $this->assertTrue($result);
+    }    
+
+    /**
+     * @covers Yan/Bundle/DeviceDetectorBundle/Detector/DeviceDetector::isOverrideMobile
+     */
+    public function testIsOverrideMobileFalse()
+    {
+        $configurationMock = $this->getConfigurationMock();
+        $configurationMock->expects($this->any())
+            ->method('hasOverrideCookie')
+            ->will($this->returnValue(false));
+
+        $sut = new DeviceDetector($configurationMock);
+        
+        $result = $sut->isOverrideMobile();
+
+        $this->assertFalse($result);
+    }    
 }

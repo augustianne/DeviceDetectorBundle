@@ -60,6 +60,11 @@ class DeviceListener
         $route = $request->get('_route');
         $controller = $request->get('_controller');
 
+        // cookie is set, treat as desktop, do not reroute
+        if($this->detector->isOverrideMobile()) {
+            return;            
+        }
+
         foreach ($params as $param) {
             $fromControllerPath = $param['from_controller_path'];
             $toControllerPath = $param['to_controller_path'];

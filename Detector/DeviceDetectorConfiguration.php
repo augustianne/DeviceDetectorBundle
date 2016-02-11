@@ -80,6 +80,29 @@ class DeviceDetectorConfiguration
     {
         return $this->container->getParameter('device_detector.tablet.controllers');
     }
-    
+
+    /**
+     * Retrieves cookie name for override cookie 
+     *
+     * @param void
+     * @return string
+     */
+    public function getOverrideCookieName()
+    {
+        return $this->container->getParameter('device_detector.override_cookie');
+    }
+
+    /**
+     * Retrieves cookie name for override cookie 
+     *
+     * @param void
+     * @return string
+     */
+    public function hasOverrideCookie()
+    {
+        $session = $this->container->get('session');
+
+        return $session->has($this->getOverrideCookieName());
+    }
        
 }

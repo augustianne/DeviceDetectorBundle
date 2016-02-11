@@ -31,7 +31,9 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('device_detector');
 
         $rootNode
+            ->addDefaultsIfNotSet()
             ->children()
+                ->scalarNode('override_cookie')->defaultValue('DEVICE_DETECTOR_OVERRIDE')->end()
                 ->arrayNode('mobile')
                     ->canBeEnabled()
                     ->children()
