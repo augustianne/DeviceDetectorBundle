@@ -23,6 +23,9 @@ class DeviceDetectorExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         $container->setParameter('device_detector', $config);
+
+        $container->setParameter('device_detector.override_cookie', $config['override_cookie']);
+
         if (isset($config['mobile'])) {
             $container->setParameter('device_detector.mobile', $config['mobile']);
             $container->setParameter('device_detector.mobile.enabled', $config['mobile']['enabled']);

@@ -41,6 +41,7 @@ class DeviceDetector extends MobileDetect
     {
         $isMobile = parent::isMobile($userAgent, $httpHeaders);
         $isTablet = $this->isTablet($userAgent, $httpHeaders);
+        
         if (!$this->configuration->treatTabletDevicesAsMobile()) {
             if ($isTablet) {
                 return false;
@@ -102,5 +103,16 @@ class DeviceDetector extends MobileDetect
     public function isControllerRoutable($controller, $path)
     {
         return (strpos($controller, $path) === 0);
+    }
+
+    /**
+     * Checks if controller should override mobile detection and treat as desktop
+     *
+     * @param void
+     * @return boolean
+     */
+    public function isOverrideMobile()
+    {
+        return $this->configuration->hasOverrideCookie();
     }
 }
