@@ -4,7 +4,9 @@ Symfony2 Bundle for switching controllers for different device views. This cater
 
 __Sample Configuration__
 
-1. Simple desktop to mobile controller redirect. This will render th mobile view for tablets as well.
+__1. Simple desktop to mobile controller redirect.__ 
+
+This will render th mobile view for tablets as well.
 
 ```
 device_detector:
@@ -20,7 +22,7 @@ device_detector:
                     - 'acme_frontend_about_us'
 ```
 
-2. Simple desktop to mobile redirection but render desktop view for tablets.
+__2. Simple desktop to mobile redirection but render desktop view for tablets.__
 
 ```
 device_detector:
@@ -39,7 +41,9 @@ device_detector:
                     - 'acme_frontend_about_us'
 ```
 
-3. Simple desktop to tablet controller redirect. By default, the bundle will treat tablets as mobile devices and will follow the configuration for mobile redirection, so it is important to set ```treat_as_mobile``` to false when tablet redirection is enabled.
+__3. Simple desktop to tablet controller redirect.__ 
+
+By default, the bundle will treat tablets as mobile devices and will follow the configuration for mobile redirection, so it is important to set ```treat_as_mobile``` to false when tablet redirection is enabled.
 
 ```
 device_detector:
@@ -66,7 +70,9 @@ device_detector:
                     - 'acme_frontend_about_us'
 ```
 
-4. Setting optional mobile view. An option is provided for optional rendering of mobile pages via setting of a cookie. If this cookie is set, this will override the redirection and render the desktop version until cookie expires.
+__4. Setting optional mobile view.__ 
+
+An option is provided for optional rendering of mobile pages via setting of a cookie. If this cookie is set, this will override the redirection and render the desktop version until cookie expires.
 
 ```
 device_detector:
